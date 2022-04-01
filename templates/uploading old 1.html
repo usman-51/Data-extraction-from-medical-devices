@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Files Upload </title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css'><link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_j.css') }}">
+
+</head>
+<body>
+<form method="POST" enctype="multipart/form-data">
+<!-- partial:index.partial.html -->
+<div class="wrap">
+  <h1>Upload Job Descriptions</h1>
+    <div class="file">
+      <div class="file__input" id="file__input">
+        <input class="file__input--file" id="customFile"  name="jd" type="file" multiple="multiple" name="files[]"/>
+        <label class="file__input--label" for="customFile" data-text-btn="Upload">Add file:</label>
+      </div>
+    </div>
+</div>
+
+<div class="wrap1">
+  <h1>Upload Resumes</h1>
+    <div class="file1">
+      <div class="file__input1" id="file__input1">
+        <input class="file__input1--file" id="customFile"  name="resumes" type="file" multiple="multiple" name="files[]"/>
+        <label class="file__input1--label" for="customFile" data-text-btn="Upload">Add file:</label>
+      </div>
+    </div>
+
+</div>
+
+<div class="wrap2">
+  <h1>Upload linkedIn profiles</h1>
+    <div class="file2">
+      <div class="file__input2" id="file__input2">
+        <input class="file__input2--file" id="customFile"  name="text" type="file" multiple="multiple" name="files[]"/>
+        <label class="file__input2--label" for="customFile" data-text-btn="Upload">Add file:</label>
+      </div>
+    </div>
+</div>
+<div align='center'  >  
+	<button class="btn btn-primary" type="submit">Submit</button>
+
+</div>  
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script>
+$(document).ready(function() {
+	 
+	// ------------  File upload BEGIN ------------
+	$('.file__input--file').on('change',function(event){
+		var files = event.target.files;
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			$("<div class='file__value'><div class='file__value--text'>" + file.name + "</div><div class='file__value--remove' data-id='" + file.name + "' ></div></div>").insertAfter('#file__input');
+		}	
+	});
+	
+	//Click to remove item
+	$('body').on('click', '.file__value', function() {
+		$(this).remove();
+	});
+	// ------------ File upload END ------------ 
+	
+	
+	
+});
+</script>
+
+<script>
+$(document).ready(function() {
+	 
+	// ------------  File upload BEGIN ------------
+	$('.file__input1--file').on('change',function(event){
+		var files = event.target.files;
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			$("<div class='file__value'><div class='file__value--text'>" + file.name + "</div><div class='file__value--remove' data-id='" + file.name + "' ></div></div>").insertAfter('#file__input1');
+		}	
+	});
+	
+	//Click to remove item
+	$('body').on('click', '.file__value', function() {
+		$(this).remove();
+	});
+	// ------------ File upload END ------------ 
+	
+	
+	
+});
+</script>
+
+<script>
+$(document).ready(function() {
+	 
+	// ------------  File upload BEGIN ------------
+	$('.file__input2--file').on('change',function(event){
+		var files = event.target.files;
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			$("<div class='file__value'><div class='file__value--text'>" + file.name + "</div><div class='file__value--remove' data-id='" + file.name + "' ></div></div>").insertAfter('#file__input2');
+		}	
+	});
+	
+	//Click to remove item
+	$('body').on('click', '.file__value', function() {
+		$(this).remove();
+	});
+	// ------------ File upload END ------------ 
+	
+	
+	
+});
+</script>
+</form>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Files Upload</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='stylen.css') }}"
+    />
+  </head>
+  <body>
+    {% extends "base.html" %} {% block content %}
+    <form method="POST" enctype="multipart/form-data">
+      <!-- partial:index.partial.html -->
+      <h1
+        style="
+          color: #7a7a7a;
+          font-size: 2.8rem;
+          font-weight: 600;
+          margin: 2rem 2rem 2rem 2rem;
+          text-align: center;
+        "
+      >
+        Upload Required Files
+      </h1>
+      <div class="container" style="color: #7a7a7a">
+        <div class="box" style="color: #7a7a7a">
+          <div class="col-md-12" style="color: #7a7a7a">
+            <div class="form-group" style="color: #7a7a7a">
+              <input
+                type="file"
+                name="jd"
+                id="file-7"
+                class="inputfile"
+                data-multiple-caption="{count} Files Uploaded"
+                accept=".docx,.txt,.doc"
+                multiple
+                style="color: #7a7a7a"
+              />
+              <label for="file-7"
+                ><span class="archive-name"></span
+                ><span
+                  class="btn-inputfile"
+                  style="color: rgb(255, 255, 255); background-color: #7a7a7a"
+                >
+                  Upload Job Descriptions</span
+                ></label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="box">
+          <div class="col-md-12">
+            <div class="form-group">
+              <input
+                type="file"
+                name="resumes"
+                id="file-6"
+                class="inputfile"
+                data-multiple-caption="{count} Files Uploaded"
+                multiple
+              />
+              <label for="file-6"
+                ><span class="archive-name"></span
+                ><span
+                  class="btn-inputfile"
+                  style="color: rgb(255, 255, 255); background-color: #7a7a7a"
+                >
+                  Upload All Resumes</span
+                ></label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="box">
+          <div class="col-md-12">
+            <div class="form-group">
+              <input
+                type="file"
+                name="text"
+                id="file-5"
+                class="inputfile"
+                data-multiple-caption="{count} Files Uploaded"
+                accept=".docx,.txt,.doc"
+                multiple
+              />
+              <label for="file-5"
+                ><span class="archive-name"></span
+                ><span
+                  class="btn-inputfile"
+                  style="color: rgb(255, 255, 255); background-color: #7a7a7a"
+                >
+                  Upload linkedIn Profiles</span
+                ></label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div align="center">
+        <button
+          class="btn btn-primary"
+          type="submit"
+          style="
+            margin-top: 50px;
+            width: 130px;
+            color: rgb(255, 255, 255);
+            background-color: #7a7a7a;
+          "
+        >
+          Submit
+        </button>
+      </div>
+
+      <!-- partial -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+      <script>
+        "use strict";
+
+        (function ($, window, document, undefined) {
+          $(".inputfile").each(function () {
+            var $input = $(this),
+              $label = $input.next("label"),
+              labelVal = $label.html();
+
+            $input.on("change", function (e) {
+              var fileName = "";
+
+              if (this.files && this.files.length > 1)
+                fileName = (
+                  this.getAttribute("data-multiple-caption") || ""
+                ).replace("{count}", this.files.length);
+              else if (e.target.value)
+                fileName = e.target.value.split("\\").pop();
+
+              if (fileName) $label.find(".archive-name").html(fileName);
+              else $label.html(labelVal);
+            });
+
+            // Firefox bug fix
+            $input
+              .on("focus", function () {
+                $input.addClass("has-focus");
+              })
+              .on("blur", function () {
+                $input.removeClass("has-focus");
+              });
+          });
+        })(jQuery, window, document);
+      </script>
+    </form>
+    {% endblock %}
+  </body>
+</html>
