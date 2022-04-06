@@ -3,10 +3,16 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
+# from flask import Flask, session
+# from flask_session import Session
 from .models import User
 from . import db
 
 auth = Blueprint('auth', __name__)
+# auth.config["SESSION_PERMANENT"] = False
+# auth.config["SESSION_TYPE"] = "filesystem"
+# Session(auth)
+
 
 @auth.route('/login')
 def login():
@@ -17,6 +23,8 @@ def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
+
+    # session["email"] = request.form.get("email")
 
     user = User.query.filter_by(email=email).first()
 
@@ -60,4 +68,5 @@ def signup_post():
 @login_required
 def logout():
     logout_user()
+    # session["name"] = None
     return redirect(url_for('main.index'))

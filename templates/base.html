@@ -32,11 +32,18 @@
                 </a>
                 {% if current_user.is_authenticated %}
                 <a
-                  href="{{ url_for('main.index11') }}"
+                  href="{{ url_for('main.uploading') }}"
                   class="navbar-item"
                   style="font-size: 1.5em; color: #7a7a7a"
                 >
                   Upload
+                </a>
+                <a
+                  href="{{ url_for('main.show_emails') }}"
+                  class="navbar-item"
+                  style="font-size: 1.5em; color: #7a7a7a"
+                >
+                  Show Data
                 </a>
                 {% endif %} {% if not current_user.is_authenticated %}
                 <a

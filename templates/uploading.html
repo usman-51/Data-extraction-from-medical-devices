@@ -1,170 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Files Upload</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='stylen.css') }}"
-    />
-  </head>
-  <body>
-    {% extends "base.html" %} {% block content %}
-    <form method="POST" enctype="multipart/form-data">
-      <!-- partial:index.partial.html -->
-      <h1
-        style="
-          color: #7a7a7a;
-          font-size: 2.8rem;
-          font-weight: 600;
-          margin: 2rem 2rem 2rem 2rem;
-          text-align: center;
-        "
-      >
-        Upload Required Files
-      </h1>
-      <div class="container" style="color: #7a7a7a">
-        <div class="box" style="color: #7a7a7a">
-          <div class="col-md-12" style="color: #7a7a7a">
-            <div class="form-group" style="color: #7a7a7a">
-              <input
-                type="file"
-                name="jd"
-                id="file-7"
-                class="inputfile"
-                data-multiple-caption="{count} Files Uploaded"
-                accept=".docx,.txt,.doc"
-                multiple
-                style="color: #7a7a7a"
-              />
-              <label for="file-7"
-                ><span class="archive-name"></span
-                ><span
-                  class="btn-inputfile"
-                  style="color: rgb(255, 255, 255); background-color: #7a7a7a"
-                >
-                  Upload Job Descriptions</span
-                ></label
-              >
-            </div>
-          </div>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cure Me</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.0/css/foundation.min.css'>
+  <link rel='stylesheet' href='https://cdn.materialdesignicons.com/1.8.36/css/materialdesignicons.min.css'>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+
+</head>
+
+<body>
+  {% extends "base.html" %} {% block content %}
+  <br><br>
+  <h1>Prevention is Better than CURE</h1>
+  <form action="{{ url_for('main.prediction')}}" id="tests" method="POST" enctype="multipart/form-data">
+    <div class="testDropdown">
+      <label for="testDropdown">Select your Test</label>
+      <select id='testdropdownid' name="testDropdown" form="tests">
+        <option value="bp">Blood Pressure</option>
+        <option value="temp">Temprature</option>
+        <option value="glc">Glucose</option>
+      </select>
+    </div>
+
+
+    <div class="deviceDropdown">
+      <label for="deviceDropdown">Select your Device</label>
+
+      <select id='glc' name="deviceDropdown" form="tests">
+        <option value="td">Table Device</option>
+        <option value="md">Mobile Device</option>
+      </select>
+
+      <select id='bp' name="deviceDropdown" form="tests">
+        <!-- <option value="md">Mobile Device</option> -->
+        <option value="td">Table Device</option>
+      </select>
+
+      <select id='temp' name="deviceDropdown" form="tests">
+        <option value="td">Table Device</option>
+        <!-- <option value="md">Mobile Device</option> -->
+      </select>
+    </div>
+
+    <h1 id='uploadh'>Upload Image</h1>
+    <div class="wrapper">
+      <div class="box">
+        <div class="js--image-preview"></div>
+        <div class="upload-options">
+          <label>
+            <input type="file" name="myimage" class="image-upload" accept="image/*" />
+          </label>
         </div>
       </div>
+    </div>
 
-      <div class="container">
-        <div class="box">
-          <div class="col-md-12">
-            <div class="form-group">
-              <input
-                type="file"
-                name="resumes"
-                id="file-6"
-                class="inputfile"
-                data-multiple-caption="{count} Files Uploaded"
-                multiple
-              />
-              <label for="file-6"
-                ><span class="archive-name"></span
-                ><span
-                  class="btn-inputfile"
-                  style="color: rgb(255, 255, 255); background-color: #7a7a7a"
-                >
-                  Upload All Resumes</span
-                ></label
-              >
-            </div>
-          </div>
-        </div>
-      </div>
+    <div align="center">
+      <button id="subBtn" type="submit" class="btn btn-secondary btn-lg" disabled>Submit</button>
+    </div>
 
-      <div class="container">
-        <div class="box">
-          <div class="col-md-12">
-            <div class="form-group">
-              <input
-                type="file"
-                name="text"
-                id="file-5"
-                class="inputfile"
-                data-multiple-caption="{count} Files Uploaded"
-                accept=".docx,.txt,.doc"
-                multiple
-              />
-              <label for="file-5"
-                ><span class="archive-name"></span
-                ><span
-                  class="btn-inputfile"
-                  style="color: rgb(255, 255, 255); background-color: #7a7a7a"
-                >
-                  Upload linkedIn Profiles</span
-                ></label
-              >
-            </div>
-          </div>
-        </div>
-      </div>
+  </form>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
-      <div align="center">
-        <button
-          class="btn btn-primary"
-          type="submit"
-          style="
-            margin-top: 50px;
-            width: 130px;
-            color: rgb(255, 255, 255);
-            background-color: #7a7a7a;
-          "
-        >
-          Submit
-        </button>
-      </div>
+  <script>
+    $(document).ready(function () {
 
-      <!-- partial -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-      <script>
-        "use strict";
+      $('#bp').show();
+      $('#glc').hide();
+      $('#temp').hide();
 
-        (function ($, window, document, undefined) {
-          $(".inputfile").each(function () {
-            var $input = $(this),
-              $label = $input.next("label"),
-              labelVal = $label.html();
+      //listen to dropdown for change
+      $("#testdropdownid").change(function () {
+        //rehide content on change
+        $('#bp').hide();
+        $('#glc').hide();
+        $('#temp').hide();
+        //unhides current item
+        console.log('afsdfasdfasdfa')
+        console.log($(this).val())
+        myval = $(this).val()
+        $('#' + myval).show();
+      });
 
-            $input.on("change", function (e) {
-              var fileName = "";
+      function initImageUpload(box) {
+        let uploadField = box.querySelector('.image-upload');
 
-              if (this.files && this.files.length > 1)
-                fileName = (
-                  this.getAttribute("data-multiple-caption") || ""
-                ).replace("{count}", this.files.length);
-              else if (e.target.value)
-                fileName = e.target.value.split("\\").pop();
+        uploadField.addEventListener('change', getFile);
 
-              if (fileName) $label.find(".archive-name").html(fileName);
-              else $label.html(labelVal);
-            });
+        function getFile(e) {
+          let file = e.currentTarget.files[0];
+          checkType(file);
+          $('#subBtn').attr('disabled', false);
 
-            // Firefox bug fix
-            $input
-              .on("focus", function () {
-                $input.addClass("has-focus");
-              })
-              .on("blur", function () {
-                $input.removeClass("has-focus");
-              });
+        }
+
+        function previewImage(file) {
+          let thumb = box.querySelector('.js--image-preview'),
+            reader = new FileReader();
+
+          reader.onload = function () {
+            thumb.style.backgroundImage = 'url(' + reader.result + ')';
+          }
+          reader.readAsDataURL(file);
+          thumb.className += ' js--no-default';
+        }
+
+        function checkType(file) {
+          let imageType = /image.*/;
+          if (!file.type.match(imageType)) {
+            throw 'Datei ist kein Bild';
+          } else if (!file) {
+            throw 'Kein Bild gewählt';
+          } else {
+            previewImage(file);
+          }
+        }
+
+      }
+
+      // initialize box-scope
+      var boxes = document.querySelectorAll('.box');
+
+      for (let i = 0; i < boxes.length; i++) {
+        let box = boxes[i];
+        initDropEffect(box);
+        initImageUpload(box);
+      }
+
+      /// drop-effect
+      function initDropEffect(box) {
+        let area, drop, areaWidth, areaHeight, maxDistance, dropWidth, dropHeight, x, y;
+
+        // get clickable area for drop effect
+        area = box.querySelector('.js--image-preview');
+        area.addEventListener('click', fireRipple);
+
+        function fireRipple(e) {
+          area = e.currentTarget
+          // create drop
+          if (!drop) {
+            drop = document.createElement('span');
+            drop.className = 'drop';
+            this.appendChild(drop);
+          }
+          // reset animate class
+          drop.className = 'drop';
+
+          // calculate dimensions of area (longest side)
+          areaWidth = getComputedStyle(this, null).getPropertyValue("width");
+          areaHeight = getComputedStyle(this, null).getPropertyValue("height");
+          maxDistance = Math.max(parseInt(areaWidth, 10), parseInt(areaHeight, 10));
+
+          // set drop dimensions to fill area
+          drop.style.width = maxDistance + 'px';
+          drop.style.height = maxDistance + 'px';
+
+          // calculate dimensions of drop
+          dropWidth = getComputedStyle(this, null).getPropertyValue("width");
+          dropHeight = getComputedStyle(this, null).getPropertyValue("height");
+
+          // calculate relative coordinates of click
+          // logic: click coordinates relative to page - parent's position relative to page - half of self height/width to make it controllable from the center
+          x = e.pageX - this.offsetLeft - (parseInt(dropWidth, 10) / 2);
+          y = e.pageY - this.offsetTop - (parseInt(dropHeight, 10) / 2) - 30;
+
+          // position drop and animate
+          drop.style.top = y + 'px';
+          drop.style.left = x + 'px';
+          drop.className += ' animate';
+          e.stopPropagation();
+
+        }
+      }
+
+      function callApi(file, testValue, deviceValue) {
+        const formData = new FormData();
+        formData.append('files', file);
+
+        fetch('http://127.0.0.1:8889/' + testValue + '/' + deviceValue, {
+          method: 'POST',
+          body: formData,
+        })
+          .then(response => response.json())
+          .then(result => {
+            console.log('Success:', result, typeof (result));
+
+            if (typeof (result) == 'string') {
+
+              img_head = document.getElementById('uploadh');
+              img_head.innerText = result
+
+            } else {
+
+              img_head = document.getElementById('uploadh');
+              img_head.innerText = result[Object.keys(result)]
+
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            // return result
           });
-        })(jQuery, window, document);
-      </script>
-    </form>
-    {% endblock %}
-  </body>
+
+      }
+
+    }
+    );
+  </script>
+  {% endblock %}
+</body>
+
 </html>
