@@ -9,7 +9,6 @@ from .helper_functions import get_lcd, imgs_to_array
 from werkzeug.utils import secure_filename
 from keras.models import load_model
 from .models import User
-from flask import jsonify
 from PIL import Image
 import numpy as np
 from .db import *
@@ -23,8 +22,8 @@ import json
 
 
 
-# records = return_all_data(mycol)
-# print('\n\n---------->>>>>>> all records ', records,'\n\n')
+records = return_all_data(mycol)
+print('\n\n---------->>>>>>> all records ', records,'\n\n')
 mydict = {}
 
 
@@ -48,32 +47,32 @@ def uploading():
 @main.route('/emails', methods=['GET', 'POST'])
 @login_required
 def show_emails():
-    # print('\n\n\n\n=======================asdfadf', request.method)
+    print('\n\n\n\n=======================asdfadf', request.method)
     if request.method == 'POST':
-        # print('---------->>>>>>>> in post')
+        print('---------->>>>>>>> in post')
         email = request.form['emailDropdown']
         # print(email)
-        email_docs =  find_documents_on_email(predictions_col,email)
-        all_emails = return_all_users_email(predictions_col)
+        email_docs =  find_documents_on_email(mycol,email)
+        all_emails = return_all_users_email(mycol)
 
-        # print('=====docs ', email_docs)
+        print('=====docs ', email_docs)
         return render_template('show_emails.html', emails=list(set(all_emails)), data=email_docs)
     else:
-        # print('---------->>>>>>>> in gwt')
+        print('---------->>>>>>>> in gwt')
         all_emails = return_all_users_email(mycol)
         return render_template('show_emails.html',emails=list(set(all_emails)))
 
 
 # aws credentials
-aws_textract = boto3.client(service_name='textract', region_name='us-east-2',aws_access_key_id = '<id>'
-,aws_secret_access_key = '<key>+YMvq')
+aws_textract = boto3.client(service_name='textract', region_name='us-east-2',aws_access_key_id = 'AKIAYO7JKT7XVYUKUWFN'
+,aws_secret_access_key = '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')
 
 
 #Load CNN model trained on data pre-defined in the paper
 model=load_model('./Dataset/best_model.h5')
 
 def predict_vals(files_add, path):
-    # print('\n\n========',path)
+    print('\n\n========',path)
     all_imgs_pred = {}
     for file in files_add:
         if file:
@@ -108,7 +107,7 @@ def predict_vals(files_add, path):
             if path == 'glc/md':
                 preds = glucose_mobile(documentName)
                 all_imgs_pred[documentName] = preds
-                # print('\n\n --------------return')
+                print('\n\n --------------return')
                 return all_imgs_pred, filename, True
 
             if path == 'temp/td':
@@ -119,7 +118,7 @@ def predict_vals(files_add, path):
                 #convert img to ndarray and resize
                 X_test = imgs_to_array( [filename+ '_DP.jpg'] )
                 os.remove(filename+'_DP.jpg')
-            # print('\n\n return')
+            print('\n\n return')
             y_pred = model.predict( X_test )
             
             img_preds = []
@@ -170,6 +169,9 @@ def glucose_mobile(documentName):
 
 
 
+
+
+
 @main.route('/prediction', methods=['GET', 'POST'])
 @login_required
 def prediction():
@@ -189,65 +191,16 @@ def prediction():
             # return render_template('prediction.html')
             preds, filename, glc_mobile_device = predict_vals(files_add, test_dropdown+'/'+device_dropdown )
 
-            print('\n\n=========>>>>>>>>>>\ Predictions : ',preds)
+            print('\n\n=========>>>>>>>>>>\nFinal Predictions : ',preds)
 
             # return render_template('loading.html')
         
-        # mydict['email'] = current_user.email
-        # mydict['time'] = str(datetime.datetime.now().time())
-        # mydict['date'] = str(datetime.datetime.now().date())
-        # mydict['test_name'] = test_dropdown
-        # mydict['device_type'] = device_dropdown
-        # mydict['image'] = {filename:''}
-
-
-        ##################################################
-        device_name = ""
-        device_type = ""
-        device_model = "c1"
-        company_name = "Accu-Chek"
-        user_name = current_user.name
-        user_email = current_user.email
-        predicted_at = str(datetime.datetime.now().time())
-        updated_at = str(datetime.datetime.now().time())
-        predicted_at_date = str(datetime.datetime.now().date())
-        test_category = ''
-        image = filename
-        test_details = {}
-
-        if device_dropdown == 'td':
-            device_type = "table_device"
-        elif device_dropdown == 'md':
-            device_type = "mobile_device"
-        
-        if test_dropdown == 'glc':
-            device_name = "glucco meter"
-            test_category = "gluccos"
-            test_details["gluccos"] = {"current_value": str(preds[filename][0]), "unit": "mg/dL"}
-        elif test_dropdown == 'bp':
-            device_name = "BP apparatus"
-            test_category = "blood pressure"
-            test_details["puls_rate"] = "72"
-            test_details["upper"] = {"current_value": str(preds[filename][0]), "unit": "mmHg"}
-            test_details["lower"] = {"current_value": str(preds[filename][-1]), "unit": "mmHg"}
-        elif test_dropdown == 'temp':
-            device_name = "thermometer"
-            test_category = "tempreture"
-            test_details["temp"] = {"current_value": str(preds[filename][0]), "unit": "°F"}
-
-        
-        test_details["time"] = "09:57:46"
-        test_details["date"] = "2022-04-06"
-
-        
-        
-        final_preds = make_final_dict(device_type, device_name,device_model,company_name,user_name,user_email,predicted_at_date,predicted_at,updated_at,\
-            test_category,image,test_details)
-
-        print('\n\n------->>>>>>>> : ', final_preds)
-
-
-        ###################################################33
+        mydict['email'] = current_user.email
+        mydict['time'] = str(datetime.datetime.now().time())
+        mydict['date'] = str(datetime.datetime.now().date())
+        mydict['test_name'] = test_dropdown
+        mydict['device_type'] = device_dropdown
+        mydict['image'] = {filename:''}
         
 
         # x = mycol.insert_one(mydict)
@@ -258,13 +211,13 @@ def prediction():
         rgb_im.save(data, "JPEG")
         encoded_img_data = base64.b64encode(data.getvalue())
         os.remove(filename)
-        # if glc_mobile_device:
-        #     if preds.keys():
-        #         preds = preds[list(preds.keys())[0]]
-        #         # preds = ','.join([str(i) for i in preds[list(preds.keys())[0]]])
-        # elif preds.keys():
-        #         preds = ','.join([str(i) for i in preds[list(preds.keys())[0]]])
-        return render_template('prediction.html',preds=json.dumps(final_preds), image=encoded_img_data.decode('utf-8') )
+        if glc_mobile_device:
+            if preds.keys():
+                preds = preds[list(preds.keys())[0]]
+                # preds = ','.join([str(i) for i in preds[list(preds.keys())[0]]])
+        elif preds.keys():
+                preds = ','.join([str(i) for i in preds[list(preds.keys())[0]]])
+        return render_template('prediction.html',preds=preds, image=encoded_img_data.decode('utf-8') )
     except:
         return render_template('uploading.html',message = "unable to extract data")
         # return redirect(url_for('main.uploading'))
@@ -274,74 +227,51 @@ def prediction():
 @login_required
 def saving():
     if request.method == 'POST':
-        print("\n\n\n\n====>>>> fjldkjsd  request json",request.form['inppreds'])
+        # print("request forms",request.form['preds'])
+        mydict['image'] = { final_img_name : request.form['preds'].split(',') }
 
-        json_data = eval(request.form['inppreds'])
-
-        print('\n\n type--->>> ',type(json_data))
-        user_info = json_data.get('user')
-        device_info = json_data.get('device')
-        pred_info = json_data.get('prediction')
-        
-
-        #insert user info
-        # user_inserted = users_col.insert_one(user_info, upsert=True)
-        # users_col.update({ 'user_email': user_info['user_email']}), 
-
-        user_inserted = users_col.update_one( { 'user_email': user_info['user_email']} , {'$set':user_info}, upsert=True)
-
-     
-        
-        
-        #insert device info
-        # device_inserted = devices_col.insert_one(device_info, upsert=True)
-        device_inserted = devices_col.update_one( { 'device_name': device_info['device_name']} , {'$set':device_info}, upsert=True)
-
-        
-        #insert prediction info
-        pred_inserted = predictions_col.insert_one(pred_info.copy())
-
-        # print("\n\n\n\n====>>>> request jason",request.json())
-        # mydict['image'] = { final_img_name : request.form['preds'].split(',') }
-
-        # x = mycol.insert_one(mydict.copy()) # check why  to use .copy error
+        x = mycol.insert_one(mydict.copy()) # check why  to use .copy error
         # print(x.inserted)
 
-        return render_template('uploading.html')
+    return render_template('uploading.html' )
 
 
 
-def make_final_dict(device_type, device_name,device_model,company_name,user_name,user_email,predicted_at_date,predicted_at,updated_at,test_category,image,test_details):
-    final_preds ={
+def make_final_dict(device_name,device_model,company_name,user_name,user_email,predicted_at,updated_at,\
+    test_category,image,test_details):
+    {
         "device": {
             "device_name": device_name,
             "device_model": device_model,
-            "company_name": company_name,
-            "device_type": device_type
+            "company_name": company_name
         },
         "user": {
             "user_name": user_name,
             "user_email": user_email,
-            
+            "time": {
+            "predicted_at": predicted_at,
+            "updated_at": updated_at
+            }
         },
         "prediction": {
-            "user_email": user_email,
-            "device_model": device_model,
             "test_category": test_category,
             "image": image,
-            "test_details":test_details,
-            "time": {
-                "predicted_at": predicted_at,
-                "updated_at": updated_at,
-                "predicted_at_date":predicted_at_date
-                }
+            "test_details": {
+            "upper": {
+                "current_value": test_details.get("upper").get("current_value"),
+                "unit": test_details.get("upper").get("unit"),
+            },
+            "lower": {
+                "current_value": test_details.get("lower").get("current_value"),
+                "unit": test_details.get("lower").get("unit"),
+            },
+            "puls_rate": test_details.get("puls_rate"),
+            "time": test_details.get("time"),
+            "date": test_details.get("date")
+            }
         }
     }
-    return final_preds
 
 
 if __name__ == '__main__':
     app.run(debug = True)
-
-
-

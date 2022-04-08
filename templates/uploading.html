@@ -48,7 +48,7 @@
       </select>
     </div>
 
-    <h1 id='uploadh'>Upload Image</h1>
+    <h1 id='uploadh'>Upload Image </h1>
     <div class="wrapper">
       <div class="box">
         <div class="js--image-preview"></div>
@@ -81,11 +81,17 @@
         $('#glc').hide();
         $('#temp').hide();
         //unhides current item
-        console.log('afsdfasdfasdfa')
         console.log($(this).val())
         myval = $(this).val()
         $('#' + myval).show();
       });
+
+      var message = '{{message}}'
+      if (message != ''){
+        const heading = document.getElementById('uploadh');
+        heading.innerHTML = `<span style="background-color: red; color:white"> {{message}}</span>`;
+
+      }
 
       function initImageUpload(box) {
         let uploadField = box.querySelector('.image-upload');
@@ -98,6 +104,8 @@
           $('#subBtn').attr('disabled', false);
 
         }
+
+    
 
         function previewImage(file) {
           let thumb = box.querySelector('.js--image-preview'),

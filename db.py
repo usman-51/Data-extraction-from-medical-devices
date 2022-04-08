@@ -3,7 +3,10 @@ import pymongo
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["qure"]
-mycol = mydb["medical_devices"]
+
+predictions_col = mydb["predictions"]
+users_col = mydb["users"]
+devices_col = mydb["devices"]
 
 def insert_values(mycol,document):
     x = mycol.insert_many(document)
@@ -19,11 +22,11 @@ def return_all_data(collection):
 def return_all_users_email(collection):
     all_emails = []
     for documents in collection.find():
-        all_emails.append(documents['email'])
+        all_emails.append(documents['user_email'])
     return all_emails
 
 def find_documents_on_email(mycol,email):
-    myquery = { "email": email }
+    myquery = { "user_email": email }
     mydocs = mycol.find(myquery,{'_id':0})
     # return mydocs
     records = []
@@ -39,13 +42,13 @@ def find_documents_on_email(mycol,email):
 #     return mycol
 
 
-def update_document(url,newvalues):
-    myquery = { 'url': url }
-    x=find_document_on_url(mycol,url)
-    newvalues['$set']['scores'].update(x['scores'])
+# def update_document(url,newvalues):
+#     myquery = { 'url': url }
+#     x=find_document_on_url(mycol,url)
+#     newvalues['$set']['scores'].update(x['scores'])
         
-    mycol.update_one(myquery, newvalues)
-    return mycol
+#     mycol.update_one(myquery, newvalues)
+#     return mycol
 
 
 
