@@ -57,8 +57,8 @@ def show_emails():
 
 
 # aws credentials
-aws_textract = boto3.client(service_name='textract', region_name='us-east-2',aws_access_key_id = 'AKIAYO7JKT7XVYUKUWFN'
-,aws_secret_access_key = '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')
+aws_textract = boto3.client(service_name='', region_name='us-east-2',aws_access_key_id = ''
+,aws_secret_access_key = '')
 
 
 #Load CNN model trained on data pre-defined in the paper
